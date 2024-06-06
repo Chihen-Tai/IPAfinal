@@ -2,7 +2,7 @@
 #include "shapes/Shape.h"
 #include <stdbool.h>
 // variables for global usage
-const double FPS = 60.0;
+const double FPS = 100.0;
 const int WIDTH = 1280;
 const int HEIGHT = 800;
 int window = 0;

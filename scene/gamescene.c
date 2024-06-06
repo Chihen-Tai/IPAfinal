@@ -16,17 +16,19 @@ Scene *New_GameScene(int label)
     Scene *pObj = New_Scene(label);
     // setting derived object members
     pDerivedObj->background = al_load_bitmap("assets/image/stage.jpg");
-    pDerivedObj->song = al_load_sample("assets/sound/gaming.mp3");
+    pDerivedObj->song = al_load_sample("assets/sound/boss.mp3");
     pDerivedObj->font = al_load_ttf_font("assets/font/C.TTF", 24, 0);
     pDerivedObj->remainingTime = 0.0;
     pDerivedObj->startTime = al_get_time();
-    pDerivedObj->countdownTime = 30.0; // 设置倒计时时长为120秒
+    pDerivedObj->countdownTime = 240.0; // 设置倒计时时长为120秒
     pDerivedObj->timeUp = false;
 
     pObj->pDerivedObj = pDerivedObj;
     // register element
     _Register_elements(pObj, New_Floor(Floor_L));
     _Register_elements(pObj, New_Beef(Beef_L));
+    _Register_elements(pObj, New_Veget(Veget_L));
+    _Register_elements(pObj, New_Trash(Trash_L));
     _Register_elements(pObj, New_Teleport(Teleport_L));
     _Register_elements(pObj, New_Tree(Tree_L));
     _Register_elements(pObj, New_Character(Character_L));
