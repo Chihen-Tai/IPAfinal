@@ -11,6 +11,7 @@
 #include "../element/beef.h"
 #include "../element/trash.h"
 #include "../element/veget.h"
+#include "../element/trash_1.h"
 /*
    [game scene object]
 */
@@ -24,7 +25,8 @@ typedef enum EleType
     FloorRow_L,
     Beef_L,
     Veget_L,
-    Trash_L
+    Trash_L,
+    Trash_1_L
 } EleType;
 typedef struct _GameScene
 {

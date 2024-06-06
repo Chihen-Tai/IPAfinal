@@ -29,6 +29,7 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Beef(Beef_L));
     _Register_elements(pObj, New_Veget(Veget_L));
     _Register_elements(pObj, New_Trash(Trash_L));
+    _Register_elements(pObj, New_Trash_1(Trash_1_L));
     _Register_elements(pObj, New_Teleport(Teleport_L));
     _Register_elements(pObj, New_Tree(Tree_L));
     _Register_elements(pObj, New_Character(Character_L));
