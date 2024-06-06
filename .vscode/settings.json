@@ -1,0 +1,16 @@
+{
+	"terminal.integrated.env.windows": {
+		"PATH": "${workspaceFolder}\\..\\MinGW\\bin;${env:PATH}"
+	},
+	"cmake.sourceDirectory": "C:/Users/allen/OneDrive - NTHU/桌面/I2P1_Final_project-master/I2P1_Final_project-master/allegro_mac/addons/acodec",
+	"files.associations": {
+		"allegro_primitives.h": "c",
+		"chrono": "c",
+		"stdlib.h": "c",
+		"algif.h": "c",
+		"type_traits": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c"
+	}
+}

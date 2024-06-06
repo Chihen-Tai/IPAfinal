@@ -1,0 +1,112 @@
+#include "food.h"
+#include "../shapes/Rectangle.h"
+int WINDOW_WIDTH = 1280;
+Elements *New_Food(int label)
+{
+    Food *pDerivedObj = (Food *)malloc(sizeof(Food));
+    Elements *pObj = New_Elements(label);
+    // setting derived object member
+    pDerivedObj->img = al_load_bitmap("assets/image/food.png");
+    pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
+    pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
+    pDerivedObj->x = WINDOW_WIDTH - pDerivedObj->width;
+    pDerivedObj->y = 0;
+    pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
+                                        pDerivedObj->y + pDerivedObj->height / 3,
+                                        pDerivedObj->x + 2 * pDerivedObj->width / 3,
+                                        pDerivedObj->y + 2 * pDerivedObj->height / 3);
+    // setting derived object function
+    pObj->pDerivedObj = pDerivedObj;
+    pObj->Update = Food_update;
+    pObj->Interact = Food_interact;
+    pObj->Draw = Food_draw;
+    pObj->Destroy = Food_destory;
+    return pObj;
+}
+void Food_update(Elements *self) {}
+void Food_interact(Elements *self, Elements *tar)
+{
+    // Assuming the target is the character in this example
+    Character *character = (Character *)(tar->pDerivedObj);
+    Food *food = (Food *)(self->pDerivedObj);
+
+    // Check if the character's hitbox collides with the food's hitbox
+    if (check_collision(character->hitbox, food->hitbox))
+    {
+        // Add code here to handle the interaction
+        // For example:
+        // Update score
+        update_score(character);
+
+        // Remove the food from the game
+        remove_food(self);
+    }
+}
+
+void Food_draw(Elements *self)
+{
+    Food *Obj = ((Food *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+}
+void Food_destory(Elements *self)
+{
+    Food *Obj = ((Food *)(self->pDerivedObj));
+    al_destroy_bitmap(Obj->img);
+    free(Obj->hitbox);
+    free(Obj);
+    free(self);
+}
+// Function to check if two hitboxes are colliding
+bool check_collision(Shape *hitbox1, Shape *hitbox2) {
+    // Assuming hitbox is a rectangle
+    int x1 = hitbox1->x;
+    int y1 = hitbox1->y;
+    int w1 = hitbox1->width;
+    int h1 = hitbox1->height;
+
+    int x2 = hitbox2->x;
+    int y2 = hitbox2->y;
+    int w2 = hitbox2->width;
+    int h2 = hitbox2->height;
+
+    // Check for collision between two rectangles
+    if (x1 < x2 + w2 &&
+        x1 + w1 > x2 &&
+        y1 < y2 + h2 &&
+        y1 + h1 > y2) {
+        // Collision detected
+        return true;
+    }
+    // No collision
+    return false;
+}
+
+// Function to update the score based on the interaction
+void update_score(Character *character) {
+    // Assuming score is a member variable of Character
+    character->score += 10; // Increment score by 10 for each food collected
+}
+
+// Function to remove the food element from the game
+void remove_food(Elements *food_element) {
+    // Assuming scene is a global variable representing the game scene
+    // Remove the food element from the list of elements in the scene
+    // You need to implement the logic to find and remove the element from the scene's list
+    // Example:
+    
+    for (int i = 0; i < scene->num_elements; i++) {
+        if (scene->elements[i] == food_element) {
+            // Shift elements after the food element to fill the gap
+            for (int j = i; j < scene->num_elements - 1; j++) {
+                scene->elements[j] = scene->elements[j + 1];
+            }
+            // Decrease the number of elements in the scene
+            scene->num_elements--;
+            // Free memory allocated for the food element
+            free(food_element->pDerivedObj);
+            free(food_element);
+            break;
+        }
+    }
+   
+}
