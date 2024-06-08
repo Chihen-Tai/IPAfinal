@@ -32,7 +32,7 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Trash_1(Trash_1_L));
     _Register_elements(pObj, New_Teleport(Teleport_L));
     _Register_elements(pObj, New_Tree(Tree_L));
-    _Register_elements(pObj, New_Character(Character_L));
+    _Register_elements(pObj, New_Character(Character_L, pObj));
     _Register_elements(pObj, New_Pan(Pan_L));
     _Register_elements(pObj, New_pot(Pot_L));
     // setting derived object function

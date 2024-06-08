@@ -6,6 +6,7 @@
 Elements *New_Floor(int label)
 {
     Floor *pDerivedObj = (Floor *)malloc(sizeof(Floor));
+    printf("floor label is %d\n", label);
     Elements *pObj = New_Elements(label);
     // setting derived object member
     pDerivedObj->img = al_load_bitmap("assets/image/floor.png");
@@ -47,11 +48,11 @@ void Floor_interact(Elements *self, Elements *tar)
         int left_limit = 0 - chara->width / 2;
         if (chara->x < left_limit)
         {
-            _Character_update_position(tar, (left_limit - chara->x), 0);
+            _Character_update_position(tar, (left_limit - chara->x), 0, chara->scene);
         }
         else if (chara->x > right_limit)
         {
-            _Character_update_position(tar, (right_limit - chara->x), 0);
+            _Character_update_position(tar, (right_limit - chara->x), 0, chara->scene);
         }
     }
 }

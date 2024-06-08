@@ -8,10 +8,10 @@ Elements *New_Teleport(int label)
     Teleport *pDerivedObj = (Teleport *)malloc(sizeof(Teleport));
     Elements *pObj = New_Elements(label);
     // setting derived object member
-    pDerivedObj->img = al_load_bitmap("assets/image/nothing.png");
+    pDerivedObj->img = al_load_bitmap("assets/image/teleport.png");
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
-    pDerivedObj->x = WIDTH - pDerivedObj->width - 50;
+    pDerivedObj->x = WIDTH - pDerivedObj->width - 150;
     pDerivedObj->y = 100;
     pDerivedObj->activate = false;
     // setting the interact object
@@ -46,7 +46,7 @@ void Teleport_interact(Elements *self, Elements *tar)
             chara->x <= Obj->x + Obj->width &&
             Obj->activate)
         {
-            _Character_update_position(tar, 0 - chara->x, 0);
+            _Character_update_position(tar, 0 - chara->x, 0, chara->scene);
         }
     }
 }
