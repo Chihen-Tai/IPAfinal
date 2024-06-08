@@ -4,6 +4,7 @@
 #include "../shapes/Rectangle.h"
 #include "../algif5/src/algif.h"
 #include <stdio.h>
+
 /*
    [Character function]
 */
@@ -193,26 +194,33 @@ void Character_update(Elements *const ele)
         }
     }
 }
+
 void Character_draw(Elements *const ele)
 {
-    // with the state, draw corresponding image
     Character *chara = ((Character *)(ele->pDerivedObj));
     ALLEGRO_BITMAP *frame = algif_get_bitmap(chara->gif_status[chara->state], al_get_time());
+
     if (frame)
     {
-        al_draw_bitmap(frame, chara->x, chara->y, ((chara->dir) ? ALLEGRO_FLIP_HORIZONTAL : 0));
+        al_draw_bitmap(frame, chara->x, chara->y, chara->dir ? ALLEGRO_FLIP_HORIZONTAL : 0);
     }
-    if (chara->state == ATK && chara->gif_status[chara->state]->display_index == 2)
+
+    if (chara->state == ATK && chara->gif_status[ATK]->display_index == 2)
     {
         al_play_sample_instance(chara->atk_Sound);
     }
 }
+
 void Character_destory(Elements *const ele)
 {
     Character *Obj = ((Character *)(ele->pDerivedObj));
+
     al_destroy_sample_instance(Obj->atk_Sound);
     for (int i = 0; i < 3; i++)
+    {
         algif_destroy_animation(Obj->gif_status[i]);
+    }
+
     free(Obj->hitbox);
     free(Obj);
     free(ele);
@@ -222,15 +230,15 @@ void _Character_update_position(Elements *const ele, int dx, int dy)
 {
     Character *chara = ((Character *)(ele->pDerivedObj));
     int new_x = chara->x + dx;
-    int new_y = chara->y + dy;
-    
+    int new_y = chara->y + dy; 
+
     // Check if the new position is within the boundaries
     if (new_x >= 0 && new_x + chara->width <= WIDTH)
     {
         chara->x = new_x;
         chara->hitbox->update_center_x(chara->hitbox, dx);
     }
-    
+
     if (new_y >= 0 && new_y + chara->height <= HEIGHT)
     {
         chara->y = new_y;
