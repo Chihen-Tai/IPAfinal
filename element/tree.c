@@ -8,7 +8,7 @@ Elements *New_Tree(int label)
     Tree *pDerivedObj = (Tree *)malloc(sizeof(Tree));
     Elements *pObj = New_Elements(label);
     // setting derived object member
-    pDerivedObj->img = al_load_bitmap("assets/image/tree.png");
+    pDerivedObj->img = al_load_bitmap("assets/image/nothing.png");
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
     pDerivedObj->x = 675;
