@@ -11,7 +11,7 @@ typedef struct _Beef {
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     int map_data[10][16];
-    bool is_picked;
+    bool is_picked; // 判斷拿起來
 } Beef;
 
 Elements *New_Beef(int label);

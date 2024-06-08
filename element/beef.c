@@ -11,9 +11,9 @@ Elements *New_Beef(int label) {
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
     _Beef_load_map(pDerivedObj);
-    pDerivedObj->x = 0; // 中心x
-    pDerivedObj->y = 0; // 中心y
-    pDerivedObj->is_picked = 0;
+    pDerivedObj->x = 0;         // 中心x
+    pDerivedObj->y = 0;         // 中心y
+    pDerivedObj->is_picked = 0; // 沒拿起來
     // setting the interact object
     pObj->inter_obj[pObj->inter_len++] = Character_L;
     // setting derived object function
@@ -38,7 +38,7 @@ void _Beef_load_map(Beef *Beef) {
 const ALLEGRO_KEYBOARD_STATE *keyboard_state; // 設定
 void Beef_update(Elements *ele) {
     Beef *Obj = (Beef *)(ele->pDerivedObj);
-    if (key_state[ALLEGRO_KEY_Z]) {
+    if (key_state[ALLEGRO_KEY_Z]) { // 偵測拿起來
         Obj->is_picked = false;
     }
 }
@@ -71,7 +71,7 @@ void Beef_draw(Elements *self) {
     else {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 16; j++) {
-                if (Obj->map_data[i][j] == 10) {
+                if (Obj->map_data[i][j] == 10) { // 跟著動
                     al_draw_bitmap(Obj->img, Obj->x + j * Obj->width, Obj->y + i * Obj->height, 0);
                 }
             }
