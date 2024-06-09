@@ -7,16 +7,13 @@ Elements *New_Teleport(int label)
 {
     Teleport *pDerivedObj = (Teleport *)malloc(sizeof(Teleport));
     Elements *pObj = New_Elements(label);
-    // setting derived object member
     pDerivedObj->img = al_load_bitmap("assets/image/teleport.png");
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
     pDerivedObj->x = WIDTH - pDerivedObj->width - 150;
     pDerivedObj->y = 100;
     pDerivedObj->activate = false;
-    // setting the interact object
     pObj->inter_obj[pObj->inter_len++] = Character_L;
-    // setting derived object function
     pObj->pDerivedObj = pDerivedObj;
     pObj->Update = Teleport_update;
     pObj->Interact = Teleport_interact;
@@ -35,18 +32,36 @@ void Teleport_update(Elements *self)
     {
         Obj->activate = false;
     }
+
+    // 打印激活状态
+    //printf("Teleport activate state: %d\n", Obj->activate);
 }
+
 void Teleport_interact(Elements *self, Elements *tar)
 {
     if (tar->label == Character_L)
     {
         Character *chara = (Character *)(tar->pDerivedObj);
         Teleport *Obj = (Teleport *)(self->pDerivedObj);
-        if (chara->x >= Obj->x &&
-            chara->x <= Obj->x + Obj->width &&
+
+        int margin = 5; // 设置一个检测范围的边界
+
+        // 打印调试信息
+        //printf("Character position: x=%d, y=%d\n", chara->x, chara->y);
+        //printf("Teleport position: x=%d, y=%d, width=%d, height=%d, activate=%d\n", Obj->x, Obj->y, Obj->width, Obj->height, Obj->activate);
+
+        if (chara->x + margin >= Obj->x &&
+            chara->x <= Obj->x + Obj->width + margin &&
+            chara->y >= Obj->y &&
+            chara->y <= Obj->y + Obj->height &&
             Obj->activate)
         {
-            _Character_update_position(tar, 0 - chara->x, 0, chara->scene);
+            _Character_update_position(tar, -500, -200, chara->scene);
+            //printf("Teleport success\n");
+        }
+        else
+        {
+            //printf("Teleport condition not met\n");
         }
     }
 }

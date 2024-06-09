@@ -12,7 +12,7 @@ Elements *New_Pan(int label)
      pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
      pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
      pDerivedObj->x = 530;
-     pDerivedObj->y = 325;
+     pDerivedObj->y = 240;
      pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
                                                      pDerivedObj->y + pDerivedObj->height / 3,
                                                      pDerivedObj->x + 2 * pDerivedObj->width / 3,

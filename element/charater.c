@@ -262,7 +262,7 @@ void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scen
                     (new_y < floor_y + floor_block_height && new_y + chara->height > floor_y))
                 {
                     collision = true;
-                    printf("COLLISION\n");
+                    //printf("COLLISION\n");
                     break;
                 }
             }
@@ -272,7 +272,7 @@ void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scen
     }
     
 
-    printf("Collision: %d\n", collision);
+    //printf("Collision: %d\n", collision);
     if (collision) return;
 
     if (new_x >= 0 && new_x + chara->width <= WIDTH)
@@ -285,6 +285,8 @@ void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scen
         chara->y = new_y;
         chara->hitbox->update_center_y(chara->hitbox, dy);
     }
+
+    //printf("Moved to: (%d, %d)\n", chara->x, chara->y); // Add for debugging
 }
 
 void Character_interact(Elements *const self, Elements *const target)
