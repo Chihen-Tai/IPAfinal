@@ -1,8 +1,8 @@
 #include "charater.h"
-#include "../scene/sceneManager.h"
-#include "projectile.h"
-#include "../shapes/Rectangle.h"
 #include "../algif5/src/algif.h"
+#include "../scene/sceneManager.h"
+#include "../shapes/Rectangle.h"
+#include "projectile.h"
 #include <stdio.h>
 #include "floor.h"
 
@@ -19,8 +19,9 @@ Elements *New_Character(int label, Scene *scene)
     
 
     char state_string[3][10] = {"stop", "move", "attack"};
-    for (int i = 0; i < 3; i++)
-    {
+
+    // 應該改成 停 走 拿(米 肉 蝦 菜) 用(平底鍋 鍋 垃圾桶) 這幾個狀態
+    for (int i = 0; i < 3; i++) {
         char buffer[50];
         sprintf(buffer, "assets/image/chara_%s.gif", state_string[i]);
         pDerivedObj->gif_status[i] = algif_new_gif(buffer, -1);
@@ -180,13 +181,11 @@ void Character_draw(Elements *const ele)
     Character *chara = (Character *)(ele->pDerivedObj);
     ALLEGRO_BITMAP *frame = algif_get_bitmap(chara->gif_status[chara->state], al_get_time());
 
-    if (frame)
-    {
+    if (frame) {
         al_draw_bitmap(frame, chara->x, chara->y, chara->dir ? ALLEGRO_FLIP_HORIZONTAL : 0);
     }
 
-    if (chara->state == ATK && chara->gif_status[ATK]->display_index == 2)
-    {
+    if (chara->state == ATK && chara->gif_status[ATK]->display_index == 2) {
         al_play_sample_instance(chara->atk_Sound);
     }
 }
@@ -196,8 +195,7 @@ void Character_destory(Elements *const ele)
     Character *Obj = (Character *)(ele->pDerivedObj);
 
     al_destroy_sample_instance(Obj->atk_Sound);
-    for (int i = 0; i < 3; i++)
-    {
+    for (int i = 0; i < 3; i++) {
         algif_destroy_animation(Obj->gif_status[i]);
     }
 
@@ -283,8 +281,7 @@ void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scen
         chara->hitbox->update_center_x(chara->hitbox, dx);
     }
 
-    if (new_y >= 0 && new_y + chara->height <= HEIGHT)
-    {
+    if (new_y >= 0 && new_y + chara->height <= HEIGHT) {
         chara->y = new_y;
         chara->hitbox->update_center_y(chara->hitbox, dy);
     }
