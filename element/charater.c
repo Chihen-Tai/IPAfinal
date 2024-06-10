@@ -31,7 +31,7 @@ Elements *New_Character(int label, Scene *scene) {
     al_attach_sample_instance_to_mixer(pDerivedObj->atk_Sound, al_get_default_mixer());
     pDerivedObj->width = pDerivedObj->gif_status[0]->width;
     pDerivedObj->height = pDerivedObj->gif_status[0]->height;
-    pDerivedObj->x = 80;
+    pDerivedObj->x = 160;
     pDerivedObj->y = 80;
     pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x, pDerivedObj->y, pDerivedObj->x + pDerivedObj->width,
                                         pDerivedObj->y + pDerivedObj->height);
@@ -147,7 +147,7 @@ void _Character_load_map(Character *character) {
             fscanf(data, "%d", &character->map_data[i][j]);
     fclose(data);
 }
-void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scene) {
+/*void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scene) {
     Character *chara = (Character *)(ele->pDerivedObj);
     int new_x = chara->x + dx;
     int new_y = chara->y + dy;
@@ -161,60 +161,60 @@ void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scen
         chara->y = new_y;
         chara->hitbox->update_center_y(chara->hitbox, dy);
     }
-}
+}*/
 
-// void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scene) {
-//     Character *chara = (Character *)(ele->pDerivedObj);
-//     int new_x = chara->x + dx;
-//     int new_y = chara->y + dy;
-//     Floor *floor = (Floor *)(scene->ele_list[Floor_L]->ele->pDerivedObj);
-//     bool collision = false;
-//     /* printf("%d ", chara->map_data[0][0]);
-//     printf("%d ", floor->width);*/
-//     int floor_block_width = floor->width;   // / 16   // Assuming floor width is scaled by the number of blocks
-//     int floor_block_height = floor->height; // / 10 Assuming floor height is scaled by the number of blocks
-//     /*printf("new_x %d\n", new_x);
-//     printf("new_y %d\n", new_y);
-//     printf("chara width %d\n", chara->width);
-//     printf("chara height %d\n", chara->height);
-//     printf("floor block width %d\n", floor_block_width);
-//     printf("floor block height %d\n", floor_block_height);
-//     */
-//     for (int i = 0; i < 10; i++) {
-//         for (int j = 0; j < 16; j++) {
-//             // printf("floor data %d\n", floor->map_data[i][j]);
-//             if (floor->map_data[i][j] != 0) {
-//                 // printf("bruh\n");
-//                 int floor_x = j * floor_block_width;
-//                 int floor_y = i * floor_block_height;
-//                 /*
-//                 printf("floor_x %d\n", floor_x);
-//                 printf("floor_y %d\n", floor_y);
-//                 */
-//                 if ((new_x < floor_x + floor_block_width && new_x + chara->width > floor_x) &&
-//                     (new_y < floor_y + floor_block_height && new_y + chara->height > floor_y)) {
-//                     collision = true;
-//                     // printf("COLLISION\n");
-//                     break;
-//                 }
-//             }
-//         }
-//         if (collision)
-//             break;
-//     }
-//     // printf("Collision: %d\n", collision);
-//     if (collision)
-//         return;
-//     if (new_x >= 0 && new_x + chara->width <= WIDTH) {
-//         chara->x = new_x;
-//         chara->hitbox->update_center_x(chara->hitbox, dx);
-//     }
-//     if (new_y >= 0 && new_y + chara->height <= HEIGHT) {
-//         chara->y = new_y;
-//         chara->hitbox->update_center_y(chara->hitbox, dy);
-//     }
-//     // printf("Moved to: (%d, %d)\n", chara->x, chara->y); // Add for debugging
-// }
+void _Character_update_position(Elements *const ele, int dx, int dy, Scene *scene) {
+     Character *chara = (Character *)(ele->pDerivedObj);
+    int new_x = chara->x + dx;
+    int new_y = chara->y + dy;
+     Floor *floor = (Floor *)(scene->ele_list[Floor_L]->ele->pDerivedObj);
+     bool collision = false;
+     /*printf("%d ", chara->map_data[0][0]);
+    printf("%d ", floor->width);*/
+    int floor_block_width = floor->width;   // / 16   // Assuming floor width is scaled by the number of blocks
+    int floor_block_height = floor->height; // / 10 Assuming floor height is scaled by the number of blocks
+    /*printf("new_x %d\n", new_x);
+    printf("new_y %d\n", new_y);
+    printf("chara width %d\n", chara->width);
+    printf("chara height %d\n", chara->height);
+    printf("floor block width %d\n", floor_block_width);
+    printf("floor block height %d\n", floor_block_height);
+    */
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 16; j++) {
+            // printf("floor data %d\n", floor->map_data[i][j]);
+            if (floor->map_data[i][j] != 0) {
+                // printf("bruh\n");
+                int floor_x = j * floor_block_width;
+                int floor_y = i * floor_block_height;
+                /*
+                printf("floor_x %d\n", floor_x);
+                printf("floor_y %d\n", floor_y);
+                */
+                if ((new_x < floor_x + floor_block_width-10 && new_x + chara->width > floor_x+40) &&
+                    (new_y < floor_y + floor_block_height-10 && new_y + chara->height > floor_y+40)) {
+                    collision = true;
+                    // printf("COLLISION\n");
+                    break;
+                }
+            }
+        }
+        if (collision)
+            break;
+    }
+    // printf("Collision: %d\n", collision);
+    if (collision)
+        return;
+    if (new_x >= 0 && new_x + chara->width <= WIDTH) {
+        chara->x = new_x;
+        chara->hitbox->update_center_x(chara->hitbox, dx);
+    }
+  if (new_y >= 0 && new_y + chara->height <= HEIGHT) {
+         chara->y = new_y;
+        chara->hitbox->update_center_y(chara->hitbox, dy);
+    }
+    //printf("Moved to: (%d, %d)\n", chara->x, chara->y); // Add for debugging
+ }
 
 void Character_interact(Elements *const self, Elements *const target) {
 }

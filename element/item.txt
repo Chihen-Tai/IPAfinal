@@ -1,0 +1,44 @@
+#include "item.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+
+
+
+Elements *New_Item(int x, int y, const char *bitmap_path) {
+    Item *pItem = (Item *)malloc(sizeof(Item));
+    pItem->x = x;
+    pItem->y = y;
+    pItem->bitmap = al_load_bitmap(bitmap_path);
+    pItem->width = al_get_bitmap_width(pItem->bitmap);
+    pItem->height = al_get_bitmap_height(pItem->bitmap);
+
+    Elements *pObj = New_Elements(ITEM_L);
+    pObj->pDerivedObj = pItem;
+
+    pObj->Draw = Item_draw;
+    pObj->Update = Item_update;
+    pObj->Interact = Item_interact;
+    pObj->Destroy = Item_destroy;
+
+    return pObj;
+}
+
+void Item_draw(Elements *const ele) {
+    Item *item = (Item *)(ele->pDerivedObj);
+    al_draw_bitmap(item->bitmap, item->x, item->y, 0);
+}
+
+void Item_update(Elements *const ele) {
+    // 通常物品不需要定期更新
+}
+
+void Item_interact(Elements *const self, Elements *const target) {
+    // 该函数可以处理与其他元素的互动
+}
+
+void Item_destroy(Elements *const ele) {
+    Item *item = (Item *)(ele->pDerivedObj);
+    al_destroy_bitmap(item->bitmap);
+    free(item);
+    free(ele);
+}
