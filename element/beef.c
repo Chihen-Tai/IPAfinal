@@ -47,12 +47,9 @@ void Beef_interact(Elements *self, Elements *tar) {
         Character *chara = (Character *)(tar->pDerivedObj);
         int right_limit = WIDTH - chara->width / 2;
         int left_limit = 0 - chara->width / 2;
-        if (chara->x < left_limit)
-        {
+        if (chara->x < left_limit) {
             _Character_update_position(tar, (left_limit - chara->x), 0, chara->scene);
-        }
-        else if (chara->x > right_limit)
-        {
+        } else if (chara->x > right_limit) {
             _Character_update_position(tar, (right_limit - chara->x), 0, chara->scene);
         }
     }

@@ -1,17 +1,16 @@
 #include "gamescene.h"
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
 #include "gameover.h"
 #include "sceneManager.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 /*
    [GameScene function]
 */
-Scene *New_GameScene(int label)
-{
+Scene *New_GameScene(int label) {
     GameScene *pDerivedObj = (GameScene *)malloc(sizeof(GameScene));
     Scene *pObj = New_Scene(label);
     // setting derived object members
@@ -30,7 +29,7 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Veget(Veget_L));
     _Register_elements(pObj, New_Trash(Trash_L));
     _Register_elements(pObj, New_Trash_1(Trash_1_L));
-    _Register_elements(pObj, New_Teleport(Teleport_L));
+    //   _Register_elements(pObj, New_Teleport(Teleport_L));
     _Register_elements(pObj, New_Tree(Tree_L));
     _Register_elements(pObj, New_Character(Character_L, pObj));
     _Register_elements(pObj, New_Pan(Pan_L));
@@ -46,34 +45,28 @@ Scene *New_GameScene(int label)
     return pObj;
 }
 
-void game_scene_update(Scene *self)
-{
+void game_scene_update(Scene *self) {
     // update every element
     ElementVec allEle = _Get_all_elements(self);
-    for (int i = 0; i < allEle.len; i++)
-    {
+    for (int i = 0; i < allEle.len; i++) {
         allEle.arr[i]->Update(allEle.arr[i]);
     }
 
     // run interact for every element
-    for (int i = 0; i < allEle.len; i++)
-    {
+    for (int i = 0; i < allEle.len; i++) {
         Elements *ele = allEle.arr[i];
         // run every interact object
-        for (int j = 0; j < ele->inter_len; j++)
-        {
+        for (int j = 0; j < ele->inter_len; j++) {
             int inter_label = ele->inter_obj[j];
             ElementVec labelEle = _Get_label_elements(self, inter_label);
-            for (int k = 0; k < labelEle.len; k++)
-            {
+            for (int k = 0; k < labelEle.len; k++) {
                 ele->Interact(ele, labelEle.arr[k]);
             }
         }
     }
 
     // remove element
-    for (int i = 0; i < allEle.len; i++)
-    {
+    for (int i = 0; i < allEle.len; i++) {
         Elements *ele = allEle.arr[i];
         if (ele->dele)
             _Remove_elements(self, ele);
@@ -84,15 +77,13 @@ void game_scene_update(Scene *self)
     double currentTime = al_get_time();
     gs->remainingTime = gs->countdownTime - (currentTime - gs->startTime);
 
-    if (gs->remainingTime <= 0)
-    {
+    if (gs->remainingTime <= 0) {
         gs->remainingTime = 0;
         gs->timeUp = true;
         gs->timeUpStart = currentTime;
     }
 
-    if (gs->timeUp)
-    {
+    if (gs->timeUp) {
         // 切换到主菜单场景
         self->scene_end = true;
         printf("before end: %d", self->score);
@@ -104,26 +95,21 @@ void game_scene_update(Scene *self)
 
 // Example of increasing the score
 // gs->score += 10; // Increment the score
-void game_scene_draw(Scene *self)
-{
+void game_scene_draw(Scene *self) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
     GameScene *gs = ((GameScene *)(self->pDerivedObj));
     al_draw_bitmap(gs->background, 0, 0, 0);
-    
+
     ElementVec allEle = _Get_all_elements(self);
-    for (int i = 0; i < allEle.len; i++)
-    {
+    for (int i = 0; i < allEle.len; i++) {
         Elements *ele = allEle.arr[i];
         ele->Draw(ele);
     }
 
     // 绘制倒计时器
-    if (gs->timeUp)
-    {
+    if (gs->timeUp) {
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), 10, 10, 0, "Time's Up!");
-    }
-    else
-    {
+    } else {
         int remainingTime = (int)gs->remainingTime;
         int minutes = remainingTime / 60;
         int seconds = remainingTime % 60;
@@ -139,15 +125,12 @@ void game_scene_draw(Scene *self)
     snprintf(scoreText, sizeof(scoreText), "Score: %d", self->score);
 
     int textWidth = al_get_text_width(gs->font, scoreText);
-    int screenWidth = al_get_display_width(al_get_current_display());                                  // Get the actual screen width
-    al_draw_text(gs->font, al_map_rgb(255, 255, 255), screenWidth - textWidth - 10, 10, 0, scoreText); 
-    self->score+=1;
-    
-        
+    int screenWidth = al_get_display_width(al_get_current_display()); // Get the actual screen width
+    al_draw_text(gs->font, al_map_rgb(255, 255, 255), screenWidth - textWidth - 10, 10, 0, scoreText);
+    self->score += 1;
 }
 
-void game_scene_destroy(Scene *self)
-{
+void game_scene_destroy(Scene *self) {
     GameScene *Obj = ((GameScene *)(self->pDerivedObj));
     ALLEGRO_BITMAP *background = Obj->background;
     ALLEGRO_SAMPLE *song = Obj->song;
@@ -158,8 +141,7 @@ void game_scene_destroy(Scene *self)
     al_destroy_font(font);
 
     ElementVec allEle = _Get_all_elements(self);
-    for (int i = 0; i < allEle.len; i++)
-    {
+    for (int i = 0; i < allEle.len; i++) {
         Elements *ele = allEle.arr[i];
         ele->Destroy(ele);
     }
